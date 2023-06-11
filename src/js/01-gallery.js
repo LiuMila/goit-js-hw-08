@@ -1,31 +1,36 @@
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 // Add imports above this line
 import { galleryItems } from './gallery-items';
 // Change code below this line
-// Описаний в документації
-import SimpleLightbox from "simplelightbox";
 
-import "simplelightbox/dist/simple-lightbox.min.css";
+console.log(galleryItems);
 
-const newListImg = galleryItems.map((img) => {
-  return `<li class="gallery__item">
-   <a class="gallery__link" href="${img.original}">
-      <img class="gallery__image" src="${img.preview}" alt="${img.description}" />
-   </a>
-</li>`;
-});
+const galleryListRef = document.querySelector('.gallery');
+const galleryItemsMurkup = makeCardsMurkup(galleryItems);
 
-const galleryListEl = document.querySelector(".gallery");
-const newListImgLine = newListImg.join("");
-galleryListEl.insertAdjacentHTML("afterbegin", newListImgLine);
+galleryListRef.insertAdjacentHTML('afterbegin', galleryItemsMurkup);
 
-galleryListEl.addEventListener("click", openModalImg);
+function makeCardsMurkup(galleryItems) {
+  return galleryItems
+    .map(
+      ({ description, original, preview }) =>
+        `<li class="gallery__item">
+          <a class="gallery__link" href="${original}">
+            <img
+              class="gallery__image"
+              src="${preview}"
+              alt="${description}"
+            />
+          </a>
+        </li>`
+    )
+    .join('');
+}
 
-function openModalImg(even) {
-  even.preventDefault();
-};
-
-var lightbox = new SimpleLightbox(".gallery a", {
+var lightbox = new SimpleLightbox('.gallery a', {
+  captions: true,
+  captionsData: 'alt',
+  captionPosition: 'bottom',
   captionDelay: 250,
-  captionSelector: "img",
-  captionsData: "alt",
 });
